@@ -12,10 +12,10 @@ class User extends Model {
 User.init(
   {
     id: {
+      type: INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: INTEGER,
     },
     username: {
       type: STRING,
