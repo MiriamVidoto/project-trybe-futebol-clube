@@ -12,7 +12,6 @@ class UserService {
   }
 
   public async loginService(email: string, password: string): Promise<IResultService> {
-    if (!email || !password) return { status: 400, message: 'All fields must be filled' };
     const result = await this.findByEmail(email);
     if (result === null) return { status: 401, message: 'Incorrect email or password' };
     const validatePassword = await bycrypt.compare(password, result.password);
