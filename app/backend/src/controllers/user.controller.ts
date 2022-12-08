@@ -6,9 +6,7 @@ export default class userLoginController {
 
   userLogin: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
-    console.log(password, email);
-    const result = await this._userService.findByEmail(email);
-    if (result === null) return res.status(401).json({ message: 'INVALID_FIELDS' });
-    return res.status(200).json('oioioid');
+    const result = await this._userService.loginService(email, password);
+    return res.status(result.status).json(result.message);
   };
 }
