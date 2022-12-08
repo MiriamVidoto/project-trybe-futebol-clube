@@ -11,12 +11,31 @@ class UserService {
     return result;
   }
 
+  public async findById(id: number): Promise<UserModel | null> {
+    const result = await this._userModel.findOne({ where: { id } });
+    return result;
+  }
+
   public async loginService(email: string, password: string): Promise<IResultService> {
     const result = await this.findByEmail(email);
-    if (result === null) return { status: 401, message: 'Incorrect email or password' };
+    if (result === null) {
+      return { status: 401, message: { message: 'Incorrect email or password' } };
+    }
     const validatePassword = await bycrypt.compare(password, result.password);
-    if (!validatePassword) return { status: 401, message: 'Incorrect email or password' };
+    if (!validatePassword) {
+      return { status: 401, message: { message: 'Incorrect email or password' } };
+    }
     return { status: 200, message: { token: JwtToken.createToken(result.id) } };
+  }
+
+  public async loginAuthorization(id: number): Promise<IResultService> {
+    if (id !== undefined) {
+      const result = await this.findById(id);
+      if (result !== null) {
+        return { status: 200, message: { role: result.role } };
+      }
+    }
+    return { status: 401, message: { message: 'Token is not valid' } };
   }
 }
 

@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { IVerifyToken } from '../interfaces/IVerifyToken';
 
 export default class JwtToken {
   static createToken(data:number): string {
@@ -9,14 +10,13 @@ export default class JwtToken {
     );
   }
 
-  // static validateToken(token:string):void {
-  //   try {
-  //     const { data } = jwt.verify(token, process.env.JWT_SECRET as string);
-  //     return data;
-  //   } catch (error) {
-  //     const e = new Error('erro');
-  //     e.name = 'erro';
-  //     return e;
-  //   }
-  // }
+  static validateToken(token:string) {
+    try {
+      const result = jwt.verify(token, process.env.JWT_SECRET as string) as IVerifyToken;
+      console.log(result);
+      return result.data;
+    } catch (error) {
+      return undefined;
+    }
+  }
 }

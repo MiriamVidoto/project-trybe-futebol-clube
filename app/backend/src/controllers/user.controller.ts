@@ -9,4 +9,10 @@ export default class userLoginController {
     const result = await this._userService.loginService(email, password);
     return res.status(result.status).json(result.message);
   };
+
+  userAuthorization: RequestHandler = async (req, res) => {
+    const id = req.body;
+    const result = await this._userService.loginAuthorization(id);
+    return res.status(result.status).json(result.message);
+  };
 }
