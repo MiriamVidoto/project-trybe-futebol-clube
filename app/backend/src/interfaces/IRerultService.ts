@@ -1,5 +1,10 @@
+interface ITeams {
+  id: number;
+  teamName: string ;
+}
+
 interface IMessage {
-  message: string;
+  message: string ;
 }
 
 interface IToken {
@@ -12,5 +17,5 @@ interface IRole {
 
 export interface IResultService {
   status: number,
-  message: IMessage | IToken | IRole,
+  message: [] | IMessage | IToken | IRole | ITeams,
 }
