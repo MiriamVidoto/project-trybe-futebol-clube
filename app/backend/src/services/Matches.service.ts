@@ -1,5 +1,6 @@
 import { IResultService } from '../interfaces/IRerultService';
 import MatchModel from '../database/models/MatchModel';
+import TeamModel from '../database/models/TeamModel';
 
 export default class MatchesService {
   static async findAll(): Promise<IResultService> {
@@ -41,5 +42,54 @@ export default class MatchesService {
     );
     console.log(response);
     return { status: 200, message: 'Updated' };
+  }
+
+  static async VerifyTeams(homeTeam:number, awayTeam:number) {
+    const verifyHomeTeam = await TeamModel.findByPk(homeTeam);
+    const verifyAwayTeam = await TeamModel.findByPk(awayTeam);
+
+    if (!verifyHomeTeam || !verifyAwayTeam) {
+      return { status: 200, message: { message: 'There is no team with such id!' } };
+    }
+    if (homeTeam === awayTeam) {
+      return { status: 200,
+        message: { message: 'It is not possible to create a match with two equal teams' },
+      };
+    }
+    return 'ok';
+  }
+
+  static async createMatch(
+    homeTeam: number,
+    awayTeam: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) {
+    const response = await MatchModel.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    });
+    return { status: 200, message: response };
+  }
+
+  static async MatchStart(
+    homeTeam: number,
+    awayTeam: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) {
+    const verify = await this.VerifyTeams(homeTeam, awayTeam);
+    if (verify === 'ok') {
+      return this.createMatch(
+        homeTeam,
+        awayTeam,
+        homeTeamGoals,
+        awayTeamGoals,
+      );
+    }
+    return verify;
   }
 }

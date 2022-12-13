@@ -28,4 +28,15 @@ export default class MatchesController {
     const result = await MatchesService.MatchFinished(id);
     return res.status(result.status).json(result.message);
   };
+
+  startMatch: RequestHandler = async (req, res) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    const result = await MatchesService.MatchStart(
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+    );
+    return res.status(result.status).json(result.message);
+  };
 }
