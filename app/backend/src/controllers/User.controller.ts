@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import UserService from '../services/user.service';
+import UserService from '../services/User.service';
 
 export default class userLoginController {
   constructor(private _userService = new UserService()) {}
