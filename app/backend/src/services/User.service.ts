@@ -30,7 +30,6 @@ class UserService {
 
   public async loginAuthorization(id: number): Promise<IResultService> {
     const result = await this.findById(id);
-    console.log(result);
     if (result !== null) {
       return { status: 200, message: { role: result.role } };
     }

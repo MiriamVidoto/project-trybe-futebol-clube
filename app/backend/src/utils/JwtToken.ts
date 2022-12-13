@@ -13,7 +13,6 @@ export default class JwtToken {
   static validateToken(token:string) {
     try {
       const result = jwt.verify(token, process.env.JWT_SECRET as string) as IVerifyToken;
-      console.log(result);
       return result.data;
     } catch (error) {
       return undefined;

@@ -40,7 +40,7 @@ export default class MatchesService {
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
-    return { status: 201, message: 'Updated' };
+    return { status: 200, message: 'Updated' };
   }
 
   static async VerifyTeams(homeTeam:number, awayTeam:number) {
