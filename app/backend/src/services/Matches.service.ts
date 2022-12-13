@@ -40,7 +40,7 @@ export default class MatchesService {
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
-    return { status: 200, message: 'Updated' };
+    return { status: 201, message: 'Updated' };
   }
 
   static async VerifyTeams(homeTeam:number, awayTeam:number) {
@@ -48,10 +48,10 @@ export default class MatchesService {
     const verifyAwayTeam = await TeamModel.findByPk(awayTeam);
 
     if (!verifyHomeTeam || !verifyAwayTeam) {
-      return { status: 200, message: { message: 'There is no team with such id!' } };
+      return { status: 404, message: { message: 'There is no team with such id!' } };
     }
     if (homeTeam === awayTeam) {
-      return { status: 200,
+      return { status: 422,
         message: { message: 'It is not possible to create a match with two equal teams' },
       };
     }
