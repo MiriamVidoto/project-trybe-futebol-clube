@@ -4,13 +4,12 @@ import JwtToken from '../utils/JwtToken';
 export default class AuthoriziationLogin {
   static validateAuthorization: RequestHandler = (req, res, next) => {
     const { authorization } = req.headers;
-    console.log(authorization);
     if (!authorization) return res.status(401).json({ message: 'Token not found' });
     const id = JwtToken.validateToken(authorization);
-    req.body.id = id;
     if (id === undefined) {
-      return { status: 401, message: { message: 'Token must be a valid token' } };
+      return res.status(401).json({ message: 'Token must be a valid token' });
     }
+    req.body.id = id;
     next();
   };
 }
