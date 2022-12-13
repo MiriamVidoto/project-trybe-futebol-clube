@@ -11,7 +11,7 @@ export default class userLoginController {
   };
 
   userAuthorization: RequestHandler = async (req, res) => {
-    const id = req.body;
+    const { id } = req.body;
     const result = await this._userService.loginAuthorization(id);
     return res.status(result.status).json(result.message);
   };

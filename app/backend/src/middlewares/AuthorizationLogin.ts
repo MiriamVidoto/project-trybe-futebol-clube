@@ -7,7 +7,8 @@ export default class AuthoriziationLogin {
     console.log(authorization);
     if (!authorization) return res.status(401).json({ message: 'Token not found' });
     const id = JwtToken.validateToken(authorization);
-    req.body = id;
+    req.body.id = id;
+    if (id === undefined) return { status: 401, message: { message: 'Token is not valid' } };
     next();
   };
 }

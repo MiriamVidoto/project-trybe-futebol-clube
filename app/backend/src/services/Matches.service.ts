@@ -36,11 +36,10 @@ export default class MatchesService {
   }
 
   static async MatchesResults(id: string, homeTeamGoals: number, awayTeamGoals: number) {
-    const response = await MatchModel.update(
+    await MatchModel.update(
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
-    console.log(response);
     return { status: 200, message: 'Updated' };
   }
 
@@ -67,12 +66,12 @@ export default class MatchesService {
   ) {
     const response = await MatchModel.create({
       homeTeam,
-      awayTeam,
       homeTeamGoals,
+      awayTeam,
       awayTeamGoals,
       inProgress: true,
     });
-    return { status: 200, message: response };
+    return { status: 201, message: response };
   }
 
   static async MatchStart(

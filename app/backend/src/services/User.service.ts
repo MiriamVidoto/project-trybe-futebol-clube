@@ -29,11 +29,10 @@ class UserService {
   }
 
   public async loginAuthorization(id: number): Promise<IResultService> {
-    if (id !== undefined) {
-      const result = await this.findById(id);
-      if (result !== null) {
-        return { status: 200, message: { role: result.role } };
-      }
+    const result = await this.findById(id);
+    console.log(result);
+    if (result !== null) {
+      return { status: 200, message: { role: result.role } };
     }
     return { status: 401, message: { message: 'Token is not valid' } };
   }
