@@ -2,7 +2,7 @@ import Match from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 import { ILeaderBoard } from '../interfaces/ILeaderBoard';
 
-export default class LeaderboardService {
+export default class LeaderBoardService {
   leaderBoard: ILeaderBoard[] = [];
   getLeaderBoard = async (filter: string) => {
     this.leaderBoard = [];
@@ -17,7 +17,7 @@ export default class LeaderboardService {
       goalsFavor: 0,
       goalsOwn: 0,
       goalsBalance: 0,
-      efficiency: 0,
+      efficiency: 0.00,
     }));
     await this.generateInfoLeaderBoard(filter);
     this.sortLeaderBoard();

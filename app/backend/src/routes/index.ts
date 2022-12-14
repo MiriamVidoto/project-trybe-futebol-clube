@@ -9,6 +9,6 @@ const routes = Router();
 routes.use('/login', loginRoutes);
 routes.use('/teams', teamsRoutes);
 routes.use('/matches', matchesRoutes);
-routes.use('/leardboard', leardboardRoutes);
+routes.use('/leaderboard', leardboardRoutes);
 
 export default routes;
