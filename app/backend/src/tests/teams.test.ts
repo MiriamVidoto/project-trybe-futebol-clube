@@ -26,7 +26,7 @@ describe('Teste da rota de Teams', () => {
     });
 
     afterEach(()=>{
-      (Team.findOne as sinon.SinonStub).restore();
+      (Team.findAll as sinon.SinonStub).restore();
     })
 
     it('Se retorna todos os times corretamente', async () => {
