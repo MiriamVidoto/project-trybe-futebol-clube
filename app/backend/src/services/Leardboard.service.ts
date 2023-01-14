@@ -9,11 +9,8 @@ export default class LeaderboardService {
 
   static getLeaderboard = async (team: string) => {
     const allTeams = await TeamsModel.findAll();
-    if (team === 'home') {
-      const leaderBoard = await this.createLeaderboard(allTeams);
-      return leaderBoard;
-    }
-    return 'leaderBoard';
+    const leaderBoard = await this.createLeaderboard(allTeams, team);
+    return leaderBoard;
   };
 
   static sortLeaderboard = (leaderBoard: ILeaderBoard[]) => {
@@ -33,7 +30,7 @@ export default class LeaderboardService {
       where: { inProgress: false },
     });
 
-  static pointsMatchesCalculation = (matches: MatchesModel[]) => {
+  static pointsMatchesHome = (matches: MatchesModel[]) => {
     const data = matches.map((el) => {
       let totalPoints = 0;
       let totalVictories = 0;
@@ -54,12 +51,35 @@ export default class LeaderboardService {
     return data;
   };
 
-  static matchesDate = (matches: MatchesModel[]) => {
+  static pointsMatchesAway = (matches: MatchesModel[]) => {
     const data = matches.map((el) => {
-      const id = el.homeTeam;
-      const goalsFavor = el.homeTeamGoals;
-      const goalsOwn = el.awayTeamGoals;
-      const goalsBalance = el.homeTeamGoals - el.awayTeamGoals;
+      let totalPoints = 0;
+      let totalVictories = 0;
+      let totalDraws = 0;
+      let totalLosses = 0;
+      const id = el.awayTeam;
+      if (el.awayTeamGoals > el.homeTeamGoals) {
+        totalPoints += 3;
+        totalVictories += 1;
+      } else if (el.awayTeamGoals === el.homeTeamGoals) {
+        totalPoints += 1;
+        totalDraws += 1;
+      } else {
+        totalLosses += 1;
+      }
+      return { id, totalPoints, totalVictories, totalDraws, totalLosses };
+    });
+    return data;
+  };
+
+  static matchesDate = (matches: MatchesModel[], typeTeam: string) => {
+    const data = matches.map((el) => {
+      const id = typeTeam === 'home' ? el.homeTeam : el.awayTeam;
+      const goalsFavor = typeTeam === 'home' ? el.homeTeamGoals : el.awayTeamGoals;
+      const goalsOwn = typeTeam === 'home' ? el.awayTeamGoals : el.homeTeamGoals;
+      const goalsBalance = typeTeam === 'home'
+        ? el.homeTeamGoals - el.awayTeamGoals
+        : el.awayTeamGoals - el.homeTeamGoals;
       return { id, goalsFavor, goalsOwn, goalsBalance };
     });
     return data;
@@ -119,9 +139,11 @@ export default class LeaderboardService {
     return result;
   };
 
-  static createLeaderboard = async (teams: TeamsModel[]) => {
-    const matchesPoints = this.pointsMatchesCalculation(await this.matchesFinished());
-    const matchesDate = this.matchesDate(await this.matchesFinished());
+  static createLeaderboard = async (teams: TeamsModel[], typeTeam: string) => {
+    const matchesPoints = typeTeam === 'home'
+      ? this.pointsMatchesHome(await this.matchesFinished())
+      : this.pointsMatchesAway(await this.matchesFinished());
+    const matchesDate = this.matchesDate(await this.matchesFinished(), typeTeam);
     const leaderBoard = teams.map((team: TeamsModel) => ({
       name: team.teamName,
       totalPoints: this.getTotalPoints(team.id, matchesPoints),
