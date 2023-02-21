@@ -18,4 +18,4 @@
   - Para **instalar as aplicações (front e back)** é necessário o comando `npm run install:apps` na pasta raiz do projeto;
   - Você pode rodar o avaliador **mostrando as operações que o navegador vai fazer no front-end** durante os testes E2E utilizando o comando `npm run test:browser`;
   - Para **debugar alguns erros do avaliador** (como por exemplo a validação do banco de dados, ou da compilação do TS), onde são *printadas* na tela algumas infos adicionais, é só utilizar o comando `npm run test:debug`;
-  - Para **subir ou descer uma aplicação do compose**, deve utilizar `npm run` com os scripts `compose:up`, `compose:down`, ou `compose:up:dev`, `compose:down:dev`;
+  - Para **subir ou descer uma aplicação do compose**, deve-se utilizar os scripts `npm run compose:up`, `npm run compose:down`, ou `npm run compose:up:dev`, `npm run compose:down:dev`;
